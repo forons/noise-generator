@@ -4,6 +4,12 @@ import org.apache.spark.sql.functions.udf
 
 class NullGen extends INoiseGen {
 
+  override def description(): String = {
+    s"${name()} nullifies the input element"
+  }
+
+  override def name(): String = "NULL"
+
   def generation[T](elem: T, rate: Double): Option[T] = {
     if (!toGenerate(rate)) {
       return Option(elem)

@@ -5,6 +5,12 @@ import org.apache.spark.sql.expressions.UserDefinedFunction
 
 class MissingInfoGen extends INoiseGen {
 
+  override def description(): String = {
+    s"${name()} removes the input tuples"
+  }
+
+  override def name(): String = "MISSING INFO"
+
   override def generate(columns: Array[Int], rate: Double)(
       df: Dataset[Row]): Dataset[Row] = {
     df.filter(_ => !toGenerate(rate))

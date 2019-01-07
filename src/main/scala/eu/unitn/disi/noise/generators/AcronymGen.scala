@@ -10,6 +10,12 @@ import scala.util.Random
 
 class AcronymGen(maxAcronymLength: Int = 4) extends INoiseGen {
 
+  override def description(): String = {
+    s"${name()} creates an acronym of maximum $maxAcronymLength words"
+  }
+
+  override def name(): String = "ACRONYM"
+
   def generate(elem: String, rate: Double): Option[String] = {
     if (!toGenerate(rate)) {
       return Option(elem)
@@ -31,7 +37,8 @@ class AcronymGen(maxAcronymLength: Int = 4) extends INoiseGen {
       return Some(str)
     }
 
-    var fromWordIndex = 0; var toWordIndex = -1
+    var fromWordIndex = 0;
+    var toWordIndex = -1
     do {
       fromWordIndex = new Random().nextInt(words.length)
     } while (words(fromWordIndex).isEmpty)

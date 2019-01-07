@@ -12,6 +12,10 @@ abstract class INoiseGen extends Serializable {
 
   val log: Logger = LoggerFactory.getLogger(classOf[INoiseGen])
 
+  def description(): String
+
+  def name(): String
+
   def toGenerate(rate: Double): Boolean = {
     new Random().nextDouble() <= rate
   }

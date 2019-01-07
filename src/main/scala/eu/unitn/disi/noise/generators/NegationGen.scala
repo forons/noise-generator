@@ -5,6 +5,12 @@ import org.apache.spark.sql.functions.udf
 
 class NegationGen extends INoiseGen {
 
+  override def description(): String = {
+    s"${name()} changes the sign of the input numbers"
+  }
+
+  override def name(): String = "NEGATION"
+
   override def stringUDF(rate: Double): UserDefinedFunction = ???
 
   def generate(elem: Int, rate: Double): Option[Int] = {

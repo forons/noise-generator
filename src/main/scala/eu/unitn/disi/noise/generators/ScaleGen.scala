@@ -7,6 +7,12 @@ import scala.util.Random
 
 class ScaleGen(scaleFactor: Double = 10.0) extends INoiseGen {
 
+  override def description(): String = {
+    s"${name()} scales up or down the input numbers of by a factor of $scaleFactor"
+  }
+
+  override def name(): String = "SCALE"
+
   override def stringUDF(rate: Double): UserDefinedFunction = ???
 
   def generate(elem: Int, rate: Double): Option[Long] = {

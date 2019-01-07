@@ -9,6 +9,12 @@ import scala.util.Random
 
 class EditGen(numberOfEdits: Int = 3) extends INoiseGen {
 
+  override def description(): String = {
+    s"${name()} generates a new value with edit distance equals to $numberOfEdits"
+  }
+
+  override def name(): String = "EDIT"
+
   def deleteChar(str: String): String = {
     if (str.isEmpty) {
       str

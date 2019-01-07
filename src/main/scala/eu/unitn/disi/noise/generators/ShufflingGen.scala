@@ -7,6 +7,12 @@ import scala.util.Random
 
 class ShufflingGen(numberOfShuffles: Int = 3) extends INoiseGen {
 
+  override def description(): String = {
+    s"${name()} shuffles up to $numberOfShuffles words in the input element"
+  }
+
+  override def name(): String = "SHUFFLING"
+
   def generate(elem: String, rate: Double): Option[String] = {
     if (!toGenerate(rate)) {
       return Option(elem)

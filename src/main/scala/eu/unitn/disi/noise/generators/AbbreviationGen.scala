@@ -5,6 +5,12 @@ import org.apache.spark.sql.functions.udf
 
 class AbbreviationGen extends INoiseGen {
 
+  override def description(): String = {
+    s"${name()} keeps only the first char or digit of the input value"
+  }
+
+  override def name(): String = "ABBREVIATION"
+
   def generate(elem: String, rate: Double): Option[String] = {
     if (!toGenerate(rate)) {
       return Option(elem)

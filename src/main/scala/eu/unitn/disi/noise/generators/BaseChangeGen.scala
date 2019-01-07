@@ -5,6 +5,12 @@ import org.apache.spark.sql.functions.udf
 
 class BaseChangeGen(convertToBase: Int = 2) extends INoiseGen {
 
+  override def description(): String = {
+    s"${name()} changes to base $convertToBase the input element"
+  }
+
+  override def name(): String = "BASE CHANGE"
+
   def convertToBase(value: Double): String = {
     val maxDigits = value.toString.split("\\.")(1).length
     val builder: StringBuilder = new StringBuilder

@@ -7,6 +7,12 @@ import scala.util.Random
 
 class PermutationGen(shuffle: Boolean = false) extends INoiseGen {
 
+  override def description(): String = {
+    s"${name()} swaps two elements of the same word/number"
+  }
+
+  override def name(): String = "PERMUTATION"
+
   def shuffle(str: String): String = {
     val chars = Random.shuffle(str.toCharArray.toSeq)
     val builder = new StringBuilder(chars.length)
