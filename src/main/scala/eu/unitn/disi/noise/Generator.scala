@@ -79,4 +79,39 @@ object Generator {
         df
     }
   }
+
+  def getNoise(noise: NoiseType): INoiseGen = {
+    try {
+      noise match {
+        case NoiseType.ABBREVIATION =>
+          new AbbreviationGen()
+        case NoiseType.ACRONYM =>
+          new AcronymGen(maxAcronymLength = 4)
+        case NoiseType.BASE_CHANGE =>
+          new BaseChangeGen(convertToBase = 2)
+        case NoiseType.EDIT =>
+          new EditGen(numberOfEdits = 3)
+        case NoiseType.MISSING_INFO =>
+          new MissingInfoGen()
+        case NoiseType.MULTILINGUAL => ???
+        case NoiseType.NEGATION =>
+          new NegationGen()
+        case NoiseType.NULL =>
+          new NullGen()
+        case NoiseType.PERMUTATION =>
+          new PermutationGen(shuffle = false)
+        case NoiseType.SCALE =>
+          new ScaleGen(scaleFactor = 10.0)
+        case NoiseType.SHUFFLING =>
+          new ShufflingGen(numberOfShuffles = 3)
+        case NoiseType.SYNONYM => ???
+      }
+    } catch {
+      case _: NotImplementedError =>
+        log.error(s"The `${noise.toString}' is not yet implemented")
+        null
+    }
+  }
+
+  def generateSingleNoise
 }

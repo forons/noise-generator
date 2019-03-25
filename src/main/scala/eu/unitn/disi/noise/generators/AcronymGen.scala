@@ -27,17 +27,14 @@ class AcronymGen(maxAcronymLength: Int = 4) extends INoiseGen {
     val words = str.split("\\s", -1)
     var nonEmptyWords = 0
     for (word <- words) {
-      nonEmptyWords = if (!word.trim.isEmpty) {
-        nonEmptyWords + 1
-      } else {
-        nonEmptyWords
-      }
+      if (!word.trim.isEmpty)
+        nonEmptyWords += 1
     }
     if (words.isEmpty || nonEmptyWords == 0 || maxAcronymLength <= 0) {
       return Some(str)
     }
 
-    var fromWordIndex = 0;
+    var fromWordIndex = 0
     var toWordIndex = -1
     do {
       fromWordIndex = new Random().nextInt(words.length)
@@ -47,14 +44,12 @@ class AcronymGen(maxAcronymLength: Int = 4) extends INoiseGen {
       1,
       new Random().nextInt(Math.min(maxAcronymLength, nonEmptyWords + 1)))
     nonEmptyWords = 0
-    var assigned = false
     breakable {
       for (i <- fromWordIndex until words.length) {
         if (!words(i).isEmpty) {
           nonEmptyWords += 1
           if (acronymLength <= nonEmptyWords) {
             toWordIndex = i
-            assigned = true
             break
           }
         }

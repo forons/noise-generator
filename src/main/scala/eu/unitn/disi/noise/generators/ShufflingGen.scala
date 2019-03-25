@@ -33,14 +33,13 @@ class ShufflingGen(numberOfShuffles: Int = 3) extends INoiseGen {
     if (words.length <= 1 || nonEmptyWords <= 1) {
       return Some(elem)
     }
-    for (shuffle <- 0 until numberOfShuffles) {
+    for (_ <- 0 until numberOfShuffles) {
       var firstWordIndex = 0
       do {
         firstWordIndex = (new Random).nextInt(words.length)
       } while (words(firstWordIndex).isEmpty)
       var precedentIndex = -1
       var succeedingIndex = -1
-      var i = 0
       for (i <- 0 until Math.max(firstWordIndex, words.length - firstWordIndex)) {
         if ((firstWordIndex + i < words.length) && !words(firstWordIndex + i).isEmpty)
           succeedingIndex = firstWordIndex + i
