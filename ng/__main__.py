@@ -39,7 +39,7 @@ def create_parser():
     parser.add_argument('-extra-noise', '--extra-noise',
                         help='The noise generator extra parameters',
                         default=None)
-    parser.add_argument('-extra-conf', '--distribution-config',
+    parser.add_argument('-extra-distribution', '--extra-distribution',
                         help='The distribution extra parameters', default=None)
     parser.add_argument('-cols', '--columns',
                         help='The list of columns where the noise '
@@ -135,7 +135,7 @@ if __name__ == '__main__':
 
     columns = get_columns(df, args.columns, args.id_columns)
     output = generate_noise(df, args.noise, args.distribution, columns,
-                            args.extra_noise, args.distribution_config)
+                            args.extra_noise, args.extra_distribution)
 
     write_dataset(output, args.output, args.output_format, args.header,
                   args.null, args.quote)
