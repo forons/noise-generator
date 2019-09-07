@@ -11,19 +11,24 @@ replacements = []
 
 class ReplaceGen(AbstractNoiseGen):
     """
-    This class introduces a change of scale into the data by multiplying/dividing the given value.
+    This class introduces a change of scale into the data by
+    multiplying/dividing the given value.
     """
 
-    def __init__(self, df, columns, distribution, given_replacements=replacements):
+    def __init__(self, df, columns, distribution,
+                 given_replacements=None):
         super().__init__(df, columns, distribution)
         global replacements
+        if given_replacements is None:
+            given_replacements = replacements
         if not given_replacements:
             given_replacements = replacements
         replacements = given_replacements
 
     @staticmethod
     def description(**kwargs):
-        return '{} replaces the input with a value in the list {}'.format(ReplaceGen.name(), replacements)
+        return f'{ReplaceGen.name()} replaces the input with a value ' \
+               f'in the list {replacements}'
 
     @staticmethod
     def name(**kwargs):
@@ -40,28 +45,46 @@ class ReplaceGen(AbstractNoiseGen):
         return random.choice(replacements)
 
     def string_udf(self, distribution):
-        return F.udf(lambda elem: ReplaceGen.replace_generation(elem, distribution), StringType())
+        return F.udf(
+            lambda elem: ReplaceGen.replace_generation(elem, distribution),
+            StringType())
 
     def int_udf(self, distribution):
-        return F.udf(lambda elem: ReplaceGen.replace_generation(elem, distribution), IntegerType())
+        return F.udf(
+            lambda elem: ReplaceGen.replace_generation(elem, distribution),
+            IntegerType())
 
     def double_udf(self, distribution):
-        return F.udf(lambda elem: ReplaceGen.replace_generation(elem, distribution), DoubleType())
+        return F.udf(
+            lambda elem: ReplaceGen.replace_generation(elem, distribution),
+            DoubleType())
 
     def bigint_udf(self, distribution):
-        return F.udf(lambda elem: ReplaceGen.replace_generation(elem, distribution), LongType())
+        return F.udf(
+            lambda elem: ReplaceGen.replace_generation(elem, distribution),
+            LongType())
 
     def tinyint_udf(self, distribution):
-        return F.udf(lambda elem: ReplaceGen.replace_generation(elem, distribution), IntegerType())
+        return F.udf(
+            lambda elem: ReplaceGen.replace_generation(elem, distribution),
+            IntegerType())
 
     def decimal_udf(self, distribution):
-        return F.udf(lambda elem: ReplaceGen.replace_generation(elem, distribution), IntegerType())
+        return F.udf(
+            lambda elem: ReplaceGen.replace_generation(elem, distribution),
+            IntegerType())
 
     def smallint_udf(self, distribution):
-        return F.udf(lambda elem: ReplaceGen.replace_generation(elem, distribution), IntegerType())
+        return F.udf(
+            lambda elem: ReplaceGen.replace_generation(elem, distribution),
+            IntegerType())
 
     def date_udf(self, distribution):
-        return F.udf(lambda elem: ReplaceGen.replace_generation(elem, distribution), DateType())
+        return F.udf(
+            lambda elem: ReplaceGen.replace_generation(elem, distribution),
+            DateType())
 
     def timestamp_udf(self, distribution):
-        return F.udf(lambda elem: ReplaceGen.replace_generation(elem, distribution), TimestampType())
+        return F.udf(
+            lambda elem: ReplaceGen.replace_generation(elem, distribution),
+            TimestampType())

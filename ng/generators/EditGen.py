@@ -26,7 +26,8 @@ class EditGen(AbstractNoiseGen):
 
     @staticmethod
     def description(**kwargs):
-        return '{} edits the given value with {} changes'.format(EditGen.name(), num_edits)
+        return '{} edits the given value with {} changes'.format(EditGen.name(),
+                                                                 num_edits)
 
     @staticmethod
     def name(**kwargs):
@@ -43,7 +44,8 @@ class EditGen(AbstractNoiseGen):
             elif choice is Edit.DELETION:
                 elem = EditGen.create_deletion(elem)
             else:
-                raise IndexError('The value {} is not a supported value'.format(choice))
+                raise IndexError(
+                    'The value {} is not a supported value'.format(choice))
         return elem
 
     @staticmethod
@@ -68,7 +70,8 @@ class EditGen(AbstractNoiseGen):
                 char = random.choice(string.digits)
             else:
                 char = random.choice(string.ascii_letters)
-        return elem[:max(0, position)] + char + elem[min(position + 1, len(elem)):]
+        return elem[:max(0, position)] + char + elem[
+                                                min(position + 1, len(elem)):]
 
     @staticmethod
     def create_deletion(elem):
@@ -86,31 +89,46 @@ class EditGen(AbstractNoiseGen):
         if isinstance(elem, int):
             return int(EditGen.create_edit(str(elem), num_edits, only_numbers))
         elif isinstance(elem, float):
-            return float(EditGen.create_edit(str(elem), num_edits, only_numbers))
+            return float(
+                EditGen.create_edit(str(elem), num_edits, only_numbers))
         elif isinstance(elem, str):
             return EditGen.create_edit(str(elem), num_edits, only_numbers)
         raise IndexError('Type {} not supported'.format(type(elem)))
 
     def string_udf(self, distribution):
-        return F.udf(lambda elem: EditGen.acronym_generation(elem, distribution), StringType())
+        return F.udf(
+            lambda elem: EditGen.acronym_generation(elem, distribution),
+            StringType())
 
     def int_udf(self, distribution):
-        return F.udf(lambda elem: EditGen.acronym_generation(elem, distribution, only_numbers=True), IntegerType())
+        return F.udf(lambda elem: EditGen.acronym_generation(elem, distribution,
+                                                             only_numbers=True),
+                     IntegerType())
 
     def double_udf(self, distribution):
-        return F.udf(lambda elem: EditGen.acronym_generation(elem, distribution, only_numbers=True), DoubleType())
+        return F.udf(lambda elem: EditGen.acronym_generation(elem, distribution,
+                                                             only_numbers=True),
+                     DoubleType())
 
     def bigint_udf(self, distribution):
-        return F.udf(lambda elem: EditGen.acronym_generation(elem, distribution, only_numbers=True), LongType())
+        return F.udf(lambda elem: EditGen.acronym_generation(elem, distribution,
+                                                             only_numbers=True),
+                     LongType())
 
     def tinyint_udf(self, distribution):
-        return F.udf(lambda elem: EditGen.acronym_generation(elem, distribution, only_numbers=True), IntegerType())
+        return F.udf(lambda elem: EditGen.acronym_generation(elem, distribution,
+                                                             only_numbers=True),
+                     IntegerType())
 
     def decimal_udf(self, distribution):
-        return F.udf(lambda elem: EditGen.acronym_generation(elem, distribution, only_numbers=True), IntegerType())
+        return F.udf(lambda elem: EditGen.acronym_generation(elem, distribution,
+                                                             only_numbers=True),
+                     IntegerType())
 
     def smallint_udf(self, distribution):
-        return F.udf(lambda elem: EditGen.acronym_generation(elem, distribution, only_numbers=True), IntegerType())
+        return F.udf(lambda elem: EditGen.acronym_generation(elem, distribution,
+                                                             only_numbers=True),
+                     IntegerType())
 
     def date_udf(self, distribution):
         pass

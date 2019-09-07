@@ -39,7 +39,8 @@ class AbstractNoiseGen(ABC):
         if callable(typed_udf):
             return df.withColumn(df.columns[col], typed_udf(df.columns[col]))
         else:
-            IndexError('The given typed udf -{}-is not callable'.format(typed_udf))
+            IndexError(
+                'The given typed udf -{}-is not callable'.format(typed_udf))
             return df
 
     def get_typed_udf(self, col_type):
@@ -55,7 +56,9 @@ class AbstractNoiseGen(ABC):
             return self.date_udf(self.distribution)
         if col_type == 'timestamp':
             return self.timestamp_udf(self.distribution)
-        raise IndexError('The given value {} is not a column type supported'.format(col_type))
+        raise IndexError(
+            'The given value {} is not a column type supported'.format(
+                col_type))
 
     @abstractmethod
     def string_udf(self, distribution):

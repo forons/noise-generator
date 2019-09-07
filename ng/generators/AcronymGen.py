@@ -26,7 +26,8 @@ class AcronymGen(AbstractNoiseGen):
 
     @staticmethod
     def description(**kwargs):
-        return '{} creates an acronym of maximum {} words'.format(AcronymGen.name(), max_acronyms)
+        return f'{AcronymGen.name()} creates an acronym ' \
+               f'of maximum {max_acronyms} words'
 
     @staticmethod
     def name(**kwargs):
@@ -47,7 +48,8 @@ class AcronymGen(AbstractNoiseGen):
         while not words[from_word_index]:
             from_word_index = random.randint(0, len(words) - 1)
 
-        len_acronym = max(1, random.randint(1, min(max_length, non_empty_words + 1)))
+        len_acronym = max(1, random.randint(1, min(max_length,
+                                                   non_empty_words + 1)))
         non_empty_words = 0
         for idx in range(from_word_index, len(words) - 1):
             if words[idx]:
@@ -62,8 +64,10 @@ class AcronymGen(AbstractNoiseGen):
         if from_word_index == 0:
             from_char_index = 0
         else:
-            from_char_index = AcronymGen.find_nth_overlapping(elem, ' ', from_word_index) + 1
-        to_char_index = AcronymGen.find_nth_overlapping(elem, ' ', to_word_index + 1)
+            from_char_index = AcronymGen.find_nth_overlapping(elem, ' ',
+                                                              from_word_index) + 1
+        to_char_index = AcronymGen.find_nth_overlapping(elem, ' ',
+                                                        to_word_index + 1)
         if to_char_index == -1:
             to_char_index = len(elem)
 
@@ -94,7 +98,9 @@ class AcronymGen(AbstractNoiseGen):
         return AcronymGen.create_acronym(elem, max_acronyms)
 
     def string_udf(self, distribution):
-        return F.udf(lambda elem: AcronymGen.acronym_generation(elem, distribution), StringType())
+        return F.udf(
+            lambda elem: AcronymGen.acronym_generation(elem, distribution),
+            StringType())
 
     def int_udf(self, distribution):
         pass

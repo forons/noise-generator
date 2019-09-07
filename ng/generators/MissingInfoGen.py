@@ -27,7 +27,9 @@ class MissingInfoGen(AbstractNoiseGen):
 
     @staticmethod
     def filter_udf(distribution):
-        return F.udf(lambda elem: MissingInfoGen.filter_func(elem, distribution), BooleanType())
+        return F.udf(
+            lambda elem: MissingInfoGen.filter_func(elem, distribution),
+            BooleanType())
 
     def generate(self):
         udf = self.filter_udf(self.distribution)

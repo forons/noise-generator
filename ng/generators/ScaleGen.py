@@ -11,7 +11,8 @@ factor = 10.
 
 class ScaleGen(AbstractNoiseGen):
     """
-    This class introduces a change of scale into the data by multiplying/dividing the given value.
+    This class introduces a change of scale into the data by
+    multiplying/dividing the given value.
     """
 
     def __init__(self, df, columns, distribution, given_factor=factor):
@@ -25,7 +26,8 @@ class ScaleGen(AbstractNoiseGen):
 
     @staticmethod
     def description(**kwargs):
-        return '{} multiplies/divides the input element by a factor of {}'.format(ScaleGen.name(), factor)
+        return f'{ScaleGen.name()} multiplies/divides the input element ' \
+               f'by a factor of {factor}'
 
     @staticmethod
     def name(**kwargs):
@@ -47,22 +49,28 @@ class ScaleGen(AbstractNoiseGen):
         pass
 
     def int_udf(self, distribution):
-        return F.udf(lambda elem: ScaleGen.scale_generation(elem, distribution), DoubleType())
+        return F.udf(lambda elem: ScaleGen.scale_generation(elem, distribution),
+                     DoubleType())
 
     def double_udf(self, distribution):
-        return F.udf(lambda elem: ScaleGen.scale_generation(elem, distribution), DoubleType())
+        return F.udf(lambda elem: ScaleGen.scale_generation(elem, distribution),
+                     DoubleType())
 
     def bigint_udf(self, distribution):
-        return F.udf(lambda elem: ScaleGen.scale_generation(elem, distribution), DoubleType())
+        return F.udf(lambda elem: ScaleGen.scale_generation(elem, distribution),
+                     DoubleType())
 
     def tinyint_udf(self, distribution):
-        return F.udf(lambda elem: ScaleGen.scale_generation(elem, distribution), DoubleType())
+        return F.udf(lambda elem: ScaleGen.scale_generation(elem, distribution),
+                     DoubleType())
 
     def decimal_udf(self, distribution):
-        return F.udf(lambda elem: ScaleGen.scale_generation(elem, distribution), DoubleType())
+        return F.udf(lambda elem: ScaleGen.scale_generation(elem, distribution),
+                     DoubleType())
 
     def smallint_udf(self, distribution):
-        return F.udf(lambda elem: ScaleGen.scale_generation(elem, distribution), DoubleType())
+        return F.udf(lambda elem: ScaleGen.scale_generation(elem, distribution),
+                     DoubleType())
 
     def date_udf(self, distribution):
         pass

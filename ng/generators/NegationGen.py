@@ -15,7 +15,7 @@ class NegationGen(AbstractNoiseGen):
 
     @staticmethod
     def description(**kwargs):
-        return '{} changes to sign of the input element'.format(NegationGen.name())
+        return f'{NegationGen.name()} changes to sign of the input element'
 
     @staticmethod
     def name(**kwargs):
@@ -33,22 +33,34 @@ class NegationGen(AbstractNoiseGen):
         pass
 
     def int_udf(self, distribution):
-        return F.udf(lambda elem: NegationGen.negation_generation(elem, distribution), IntegerType())
+        return F.udf(
+            lambda elem: NegationGen.negation_generation(elem, distribution),
+            IntegerType())
 
     def double_udf(self, distribution):
-        return F.udf(lambda elem: NegationGen.negation_generation(elem, distribution), DoubleType())
+        return F.udf(
+            lambda elem: NegationGen.negation_generation(elem, distribution),
+            DoubleType())
 
     def bigint_udf(self, distribution):
-        return F.udf(lambda elem: NegationGen.negation_generation(elem, distribution), LongType())
+        return F.udf(
+            lambda elem: NegationGen.negation_generation(elem, distribution),
+            LongType())
 
     def tinyint_udf(self, distribution):
-        return F.udf(lambda elem: NegationGen.negation_generation(elem, distribution), BinaryType())
+        return F.udf(
+            lambda elem: NegationGen.negation_generation(elem, distribution),
+            BinaryType())
 
     def decimal_udf(self, distribution):
-        return F.udf(lambda elem: NegationGen.negation_generation(elem, distribution), DecimalType())
+        return F.udf(
+            lambda elem: NegationGen.negation_generation(elem, distribution),
+            DecimalType())
 
     def smallint_udf(self, distribution):
-        return F.udf(lambda elem: NegationGen.negation_generation(elem, distribution), ShortType())
+        return F.udf(
+            lambda elem: NegationGen.negation_generation(elem, distribution),
+            ShortType())
 
     def date_udf(self, distribution):
         pass

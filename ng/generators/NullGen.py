@@ -28,28 +28,37 @@ class NullGen(AbstractNoiseGen):
         return elem
 
     def string_udf(self, distribution):
-        return F.udf(lambda elem: NullGen.null_generation(elem, distribution), StringType())
+        return F.udf(lambda elem: NullGen.null_generation(elem, distribution),
+                     StringType())
 
     def int_udf(self, distribution):
-        return F.udf(lambda elem: NullGen.null_generation(elem, distribution), IntegerType())
+        return F.udf(lambda elem: NullGen.null_generation(elem, distribution),
+                     IntegerType())
 
     def double_udf(self, distribution):
-        return F.udf(lambda elem: NullGen.null_generation(elem, distribution), DoubleType())
+        return F.udf(lambda elem: NullGen.null_generation(elem, distribution),
+                     DoubleType())
 
     def bigint_udf(self, distribution):
-        return F.udf(lambda elem: NullGen.null_generation(elem, distribution), LongType())
+        return F.udf(lambda elem: NullGen.null_generation(elem, distribution),
+                     LongType())
 
     def tinyint_udf(self, distribution):
-        return F.udf(lambda elem: NullGen.null_generation(elem, distribution), ByteType())
+        return F.udf(lambda elem: NullGen.null_generation(elem, distribution),
+                     ByteType())
 
     def decimal_udf(self, distribution):
-        return F.udf(lambda elem: NullGen.null_generation(elem, distribution), DecimalType())
+        return F.udf(lambda elem: NullGen.null_generation(elem, distribution),
+                     DecimalType())
 
     def smallint_udf(self, distribution):
-        return F.udf(lambda elem: NullGen.null_generation(elem, distribution), ShortType())
+        return F.udf(lambda elem: NullGen.null_generation(elem, distribution),
+                     ShortType())
 
     def date_udf(self, distribution):
-        return F.udf(lambda elem: NullGen.null_generation(elem, distribution), DateType())
+        return F.udf(lambda elem: NullGen.null_generation(elem, distribution),
+                     DateType())
 
     def timestamp_udf(self, distribution):
-        return F.udf(lambda elem: NullGen.null_generation(elem, distribution), TimestampType())
+        return F.udf(lambda elem: NullGen.null_generation(elem, distribution),
+                     TimestampType())

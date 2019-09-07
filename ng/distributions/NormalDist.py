@@ -14,7 +14,8 @@ class NormalDist(AbstractDist):
     This class is implements a normal noise distribution.
     """
 
-    def __init__(self, given_loc=0., given_scale=1., is_negative=False, seed=123):
+    def __init__(self, given_loc=0., given_scale=1., is_negative=False,
+                 seed=123):
         super().__init__(seed)
         self.is_negative = is_negative
         global loc
@@ -24,7 +25,8 @@ class NormalDist(AbstractDist):
 
     @staticmethod
     def description(**kwargs):
-        return 'Normal distribution, with loc={} and scale={}'.format(loc, scale)
+        return 'Normal distribution, with loc={} and scale={}'.format(loc,
+                                                                      scale)
 
     @staticmethod
     def name(**kwargs):

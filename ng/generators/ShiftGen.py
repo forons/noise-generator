@@ -11,7 +11,8 @@ factor = 10.
 
 class ShiftGen(AbstractNoiseGen):
     """
-    This class introduces a shift into the data by multiplying/dividing the given value.
+    This class introduces a shift into the data by multiplying/dividing
+    the given value.
     """
 
     def __init__(self, df, columns, distribution, given_factor=factor):
@@ -25,7 +26,8 @@ class ShiftGen(AbstractNoiseGen):
 
     @staticmethod
     def description(**kwargs):
-        return '{} sums/subtracts to the input element by a factor of {}'.format(ShiftGen.name(), factor)
+        return f'{ShiftGen.name()} sums/subtracts to the input element ' \
+               f'by a factor of {factor}'
 
     @staticmethod
     def name(**kwargs):
@@ -47,22 +49,28 @@ class ShiftGen(AbstractNoiseGen):
         pass
 
     def int_udf(self, distribution):
-        return F.udf(lambda elem: ShiftGen.scale_generation(elem, distribution), DoubleType())
+        return F.udf(lambda elem: ShiftGen.scale_generation(elem, distribution),
+                     DoubleType())
 
     def double_udf(self, distribution):
-        return F.udf(lambda elem: ShiftGen.scale_generation(elem, distribution), DoubleType())
+        return F.udf(lambda elem: ShiftGen.scale_generation(elem, distribution),
+                     DoubleType())
 
     def bigint_udf(self, distribution):
-        return F.udf(lambda elem: ShiftGen.scale_generation(elem, distribution), DoubleType())
+        return F.udf(lambda elem: ShiftGen.scale_generation(elem, distribution),
+                     DoubleType())
 
     def tinyint_udf(self, distribution):
-        return F.udf(lambda elem: ShiftGen.scale_generation(elem, distribution), DoubleType())
+        return F.udf(lambda elem: ShiftGen.scale_generation(elem, distribution),
+                     DoubleType())
 
     def decimal_udf(self, distribution):
-        return F.udf(lambda elem: ShiftGen.scale_generation(elem, distribution), DoubleType())
+        return F.udf(lambda elem: ShiftGen.scale_generation(elem, distribution),
+                     DoubleType())
 
     def smallint_udf(self, distribution):
-        return F.udf(lambda elem: ShiftGen.scale_generation(elem, distribution), DoubleType())
+        return F.udf(lambda elem: ShiftGen.scale_generation(elem, distribution),
+                     DoubleType())
 
     def date_udf(self, distribution):
         pass

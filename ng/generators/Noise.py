@@ -32,7 +32,8 @@ class Noise(Enum):
     SYNONYM = 13
 
     @staticmethod
-    def determine_generator(given_noise, df, columns, distribution, noise_params):
+    def determine_generator(given_noise, df, columns, distribution,
+                            noise_params):
         try:
             noise = given_noise.upper()
             if Noise[noise] is Noise.ABBREVIATION:
@@ -80,4 +81,5 @@ class Noise(Enum):
             if Noise[noise] is Noise.SYNONYM:
                 pass
         except Exception:
-            raise IndexError('The given value {} is not a noise supported'.format(given_noise))
+            raise IndexError(
+                f'The given value {given_noise} is not a noise supported')

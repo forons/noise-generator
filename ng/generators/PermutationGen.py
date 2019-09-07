@@ -24,8 +24,8 @@ class PermutationGen(AbstractNoiseGen):
 
     @staticmethod
     def description(**kwargs):
-        return '{} creates a permutation of two elements of the same word ' \
-               'or number or shuffles the input'.format(PermutationGen.name())
+        return f'{PermutationGen.name()} creates a permutation of ' \
+               f'two elements of the same word or number or shuffles the input'
 
     @staticmethod
     def name(**kwargs):
@@ -45,10 +45,13 @@ class PermutationGen(AbstractNoiseGen):
     def create_permutation(elem):
         position = random.randint(0, len(elem) - 1)
         if random.random() < 0.5 and position != 0 or position == len(elem) - 1:
-            return elem[:max(0, position - 1)] + elem[position] + elem[position - 1] + elem[
-                                                                                       min(position + 1, len(elem)):]
+            first_part = elem[:max(0, position - 1)]
+            last_part = elem[min(position + 1, len(elem)):]
+            return first_part + elem[position] + elem[position - 1] + last_part
         else:
-            return elem[:position] + elem[position + 1] + elem[position] + elem[min(position + 2, len(elem)):]
+            first_part = elem[:position]
+            last_part = elem[min(position + 2, len(elem)):]
+            return first_part + elem[position + 1] + elem[position] + last_part
 
     @staticmethod
     def permute(elem, distribution, is_shuffle):
@@ -59,9 +62,11 @@ class PermutationGen(AbstractNoiseGen):
         if isinstance(elem, str):
             return PermutationGen.permutation_generation(elem, is_shuffle)
         if isinstance(elem, int):
+            to_return = int(PermutationGen.permutation_generation(str(elem)[:1],
+                                                                  is_shuffle))
             if elem < 0:
-                return - int(PermutationGen.permutation_generation(str(elem)[:1], is_shuffle))
-            return int(PermutationGen.permutation_generation(str(elem)[:1], is_shuffle))
+                return -to_return
+            return to_return
         if isinstance(elem, float):
             is_negative = elem < 0.
             has_exponent = str(elem).upper().find('E') != -1
@@ -77,28 +82,42 @@ class PermutationGen(AbstractNoiseGen):
             if is_negative:
                 return -value
             return value
-        raise IndexError('The type {} is not supported'.format(type(elem)))
+        raise IndexError(f'The type {type(elem)} is not supported')
 
     def string_udf(self, distribution):
-        return F.udf(lambda elem: PermutationGen.permute(elem, distribution, is_shuffle=shuffle), StringType())
+        return F.udf(lambda elem: PermutationGen.permute(elem, distribution,
+                                                         is_shuffle=shuffle),
+                     StringType())
 
     def int_udf(self, distribution):
-        return F.udf(lambda elem: PermutationGen.permute(elem, distribution, is_shuffle=shuffle), LongType())
+        return F.udf(lambda elem: PermutationGen.permute(elem, distribution,
+                                                         is_shuffle=shuffle),
+                     LongType())
 
     def double_udf(self, distribution):
-        return F.udf(lambda elem: PermutationGen.permute(elem, distribution, is_shuffle=shuffle), DoubleType())
+        return F.udf(lambda elem: PermutationGen.permute(elem, distribution,
+                                                         is_shuffle=shuffle),
+                     DoubleType())
 
     def bigint_udf(self, distribution):
-        return F.udf(lambda elem: PermutationGen.permute(elem, distribution, is_shuffle=shuffle), LongType())
+        return F.udf(lambda elem: PermutationGen.permute(elem, distribution,
+                                                         is_shuffle=shuffle),
+                     LongType())
 
     def tinyint_udf(self, distribution):
-        return F.udf(lambda elem: PermutationGen.permute(elem, distribution, is_shuffle=shuffle), IntegerType())
+        return F.udf(lambda elem: PermutationGen.permute(elem, distribution,
+                                                         is_shuffle=shuffle),
+                     IntegerType())
 
     def decimal_udf(self, distribution):
-        return F.udf(lambda elem: PermutationGen.permute(elem, distribution, is_shuffle=shuffle), IntegerType())
+        return F.udf(lambda elem: PermutationGen.permute(elem, distribution,
+                                                         is_shuffle=shuffle),
+                     IntegerType())
 
     def smallint_udf(self, distribution):
-        return F.udf(lambda elem: PermutationGen.permute(elem, distribution, is_shuffle=shuffle), IntegerType())
+        return F.udf(lambda elem: PermutationGen.permute(elem, distribution,
+                                                         is_shuffle=shuffle),
+                     IntegerType())
 
     def date_udf(self, distribution):
         pass

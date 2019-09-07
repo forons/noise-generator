@@ -14,7 +14,8 @@ class ShufflingGen(AbstractNoiseGen):
     This class introduces word shuffling into the data.
     """
 
-    def __init__(self, df, columns, distribution, given_num_shuffles=num_shuffles):
+    def __init__(self, df, columns, distribution,
+                 given_num_shuffles=num_shuffles):
         super().__init__(df, columns, distribution)
         global num_shuffles
         if not given_num_shuffles:
@@ -25,7 +26,8 @@ class ShufflingGen(AbstractNoiseGen):
 
     @staticmethod
     def description(**kwargs):
-        return '{} shuffles up to {} words in the input element'.format(ShufflingGen.name(), num_shuffles)
+        return f'{ShufflingGen.name()} shuffles up to {num_shuffles} words ' \
+               f'in the input element'
 
     @staticmethod
     def name(**kwargs):
@@ -74,7 +76,9 @@ class ShufflingGen(AbstractNoiseGen):
         return start
 
     def string_udf(self, distribution):
-        return F.udf(lambda elem: ShufflingGen.shuffling_generation(elem, distribution), StringType())
+        return F.udf(
+            lambda elem: ShufflingGen.shuffling_generation(elem, distribution),
+            StringType())
 
     def int_udf(self, distribution):
         pass
