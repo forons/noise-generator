@@ -90,13 +90,25 @@ def write_dataset(data, output_path, output_format, header, null, quote):
 
 
 def get_columns(data, given_columns, id_columns):
-    if not given_columns or given_columns is None:
-        cols = list(range(len(data.columns)))
+    cols = split_columns(given_columns,
+                         default_arg=list(range(len(data.columns))))
+    id_cols = split_columns(given_columns, default_arg=[])
+    return [col for col in cols if col not in id_cols]
+
+
+def split_columns(cols, default_arg=None):
+    if default_arg is None:
+        default_arg = []
+
+    if cols is None or len(cols) == 0:
+        return default_arg
+
+    if ',' in cols:
+        return [int(col) for col in cols.split(',')]
+    elif ' ' in cols:
+        return [int(col) for col in cols.split(',')]
     else:
-        cols = list(map(int, given_columns.split(',')))
-    if id_columns:
-        return [int(col) for col in cols if col not in id_columns.split(',')]
-    return cols
+        raise ValueError('Unknown column separator: it should be`,` or ` `')
 
 
 def quiet_logs(sc):
