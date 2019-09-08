@@ -82,5 +82,5 @@ class Noise(Enum):
                 pass
         except Exception:
             raise IndexError(
-                'The given value {} is not a noise supported'
-                    .format(given_noise))
+                'The given value {} is not a noise supported'.format(
+                    given_noise))

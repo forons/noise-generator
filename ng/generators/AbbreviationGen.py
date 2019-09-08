@@ -47,54 +47,54 @@ class AbbreviationGen(AbstractNoiseGen):
 
     def string_udf(self, distribution):
         return F.udf(
-            lambda elem: AbbreviationGen.abbreviation_str_generation(elem,
-                                                                     distribution),
+            lambda elem:
+            AbbreviationGen.abbreviation_str_generation(elem, distribution),
             StringType())
 
     def int_udf(self, distribution):
         return F.udf(
-            lambda elem: AbbreviationGen.abbreviation_num_generation(elem,
-                                                                     distribution),
+            lambda elem:
+            AbbreviationGen.abbreviation_num_generation(elem, distribution),
             IntegerType())
 
     def double_udf(self, distribution):
         return F.udf(
-            lambda elem: AbbreviationGen.abbreviation_num_generation(elem,
-                                                                     distribution),
+            lambda elem:
+            AbbreviationGen.abbreviation_num_generation(elem, distribution),
             DoubleType())
 
     def bigint_udf(self, distribution):
         return F.udf(
-            lambda elem: AbbreviationGen.abbreviation_num_generation(elem,
-                                                                     distribution),
+            lambda elem:
+            AbbreviationGen.abbreviation_num_generation(elem, distribution),
             LongType())
 
     def tinyint_udf(self, distribution):
         return F.udf(
-            lambda elem: AbbreviationGen.abbreviation_num_generation(elem,
-                                                                     distribution),
+            lambda elem:
+            AbbreviationGen.abbreviation_num_generation(elem, distribution),
             ByteType())
 
     def decimal_udf(self, distribution):
         return F.udf(
-            lambda elem: AbbreviationGen.abbreviation_num_generation(elem,
-                                                                     distribution),
+            lambda elem:
+            AbbreviationGen.abbreviation_num_generation(elem, distribution),
             DecimalType())
 
     def smallint_udf(self, distribution):
         return F.udf(
-            lambda elem: AbbreviationGen.abbreviation_num_generation(elem,
-                                                                     distribution),
+            lambda elem:
+            AbbreviationGen.abbreviation_num_generation(elem, distribution),
             ShortType())
 
     def date_udf(self, distribution):
         return F.udf(
-            lambda elem: AbbreviationGen.abbreviation_str_generation(elem,
-                                                                     distribution),
+            lambda elem:
+            AbbreviationGen.abbreviation_str_generation(elem, distribution),
             StringType())
 
     def timestamp_udf(self, distribution):
         return F.udf(
-            lambda elem: AbbreviationGen.abbreviation_str_generation(elem,
-                                                                     distribution),
+            lambda elem:
+            AbbreviationGen.abbreviation_str_generation(elem, distribution),
             StringType())

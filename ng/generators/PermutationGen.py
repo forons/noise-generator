@@ -82,7 +82,7 @@ class PermutationGen(AbstractNoiseGen):
             if is_negative:
                 return -value
             return value
-        raise IndexError(f'The type {type(elem)} is not supported')
+        raise IndexError('The type {} is not supported'.format(type(elem)))
 
     def string_udf(self, distribution):
         return F.udf(lambda elem: PermutationGen.permute(elem, distribution,
