@@ -89,11 +89,10 @@ def write_dataset(data, output_path, output_format, header, null, quote):
             output_format))
 
 
-def get_columns(data, given_columns, id_columns):
-    cols = split_columns(given_columns,
-                         default_arg=list(range(len(data.columns))))
-    id_cols = split_columns(given_columns, default_arg=[])
-    return [col for col in cols if col not in id_cols]
+def get_columns(num, given_columns, id_columns):
+    cols = split_columns(given_columns, default_arg=[idx for idx in range(num)])
+    immutable_cols = split_columns(id_columns, default_arg=[])
+    return [col for col in cols if col not in immutable_cols]
 
 
 def split_columns(cols, default_arg=None):
@@ -142,13 +141,14 @@ def create_session(params):
 
 if __name__ == '__main__':
     args = create_parser().parse_args()
-    print(args)
     spark = create_session(args)
 
     df = read_dataset(spark, args.input, args.input_format, args.inferSchema,
                       args.header, args.null, args.quote)
 
-    columns = get_columns(df, args.columns, args.id_columns)
+    columns = get_columns(len(df.columns), args.columns, args.id_columns)
+    print('COLUMNS: {}'.format(columns))
+    print('COLS: {}'.format([df.columns[idx] for idx in columns]))
     output = generate_noise(df, args.noise, args.distribution, columns,
                             args.extra_noise, args.extra_distribution)
 
