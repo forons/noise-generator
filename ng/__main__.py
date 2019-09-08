@@ -55,6 +55,7 @@ def create_parser():
 def read_dataset(spark_session, input_path, input_format, infer_schema, header,
                  null, quote):
     reader = spark_session.read
+    input_format = input_format.lower().replace('.', '').strip()
     if input_format == 'csv':
         return reader.csv(input_path, inferSchema=infer_schema, header=header,
                           nullValue=null, quote=quote)
@@ -65,13 +66,15 @@ def read_dataset(spark_session, input_path, input_format, infer_schema, header,
         return reader.parquet(input_path, inferSchema=infer_schema,
                               header=header, nullValue=null, quote=quote)
     else:
-        logging.WARN('The input format {} is currently not tested.'.format(input_format))
+        logging.WARN(
+            'The input format {} is currently not tested.'.format(input_format))
         return spark_session.read.load(input, inferSchema=infer_schema,
                                        header=header, nullValue=null,
                                        quote=quote)
 
 
 def write_dataset(data, output_path, output_format, header, null, quote):
+    output_format = output_format.lower()
     if output_format == 'csv':
         data.write.mode('overwrite').csv(output_path, header=header,
                                          nullValue=null, quote=quote)
@@ -82,7 +85,8 @@ def write_dataset(data, output_path, output_format, header, null, quote):
         data.write.mode('overwrite').parquet(output_path, header=header,
                                              nullValue=null, quote=quote)
     else:
-        logging.WARN('The output format {} is currently not tested.'.format(output_format))
+        logging.WARN('The output format {} is currently not tested.'.format(
+            output_format))
 
 
 def get_columns(data, given_columns, id_columns):
@@ -126,6 +130,7 @@ def create_session(params):
 
 if __name__ == '__main__':
     args = create_parser().parse_args()
+    print(args)
     spark = create_session(args)
 
     df = read_dataset(spark, args.input, args.input_format, args.inferSchema,
