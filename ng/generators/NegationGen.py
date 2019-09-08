@@ -15,7 +15,8 @@ class NegationGen(AbstractNoiseGen):
 
     @staticmethod
     def description(**kwargs):
-        return f'{NegationGen.name()} changes to sign of the input element'
+        return '{} changes to sign of the input element' \
+            .format(NegationGen.name())
 
     @staticmethod
     def name(**kwargs):

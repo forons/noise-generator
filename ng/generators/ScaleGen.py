@@ -26,8 +26,8 @@ class ScaleGen(AbstractNoiseGen):
 
     @staticmethod
     def description(**kwargs):
-        return f'{ScaleGen.name()} multiplies/divides the input element ' \
-               f'by a factor of {factor}'
+        return '{} multiplies/divides the input element by a factor of {}' \
+            .format(ScaleGen.name(), factor)
 
     @staticmethod
     def name(**kwargs):

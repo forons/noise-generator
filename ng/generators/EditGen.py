@@ -26,8 +26,8 @@ class EditGen(AbstractNoiseGen):
 
     @staticmethod
     def description(**kwargs):
-        return '{} edits the given value with {} changes'.format(EditGen.name(),
-                                                                 num_edits)
+        return '{} edits the given value with {} changes' \
+            .format(EditGen.name(), num_edits)
 
     @staticmethod
     def name(**kwargs):

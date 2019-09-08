@@ -26,8 +26,8 @@ class ShufflingGen(AbstractNoiseGen):
 
     @staticmethod
     def description(**kwargs):
-        return f'{ShufflingGen.name()} shuffles up to {num_shuffles} words ' \
-               f'in the input element'
+        return '{} shuffles up to {} words in the input element' \
+            .format(ShufflingGen.name(), num_shuffles)
 
     @staticmethod
     def name(**kwargs):

@@ -24,8 +24,8 @@ class BaseChangeGen(AbstractNoiseGen):
 
     @staticmethod
     def description(**kwargs):
-        return f'{BaseChangeGen.name()} changes to base {base} ' \
-               f'the input element'
+        return '{} changes to base {} the input element' \
+            .format(BaseChangeGen.name(), base)
 
     @staticmethod
     def name(**kwargs):
@@ -43,39 +43,39 @@ class BaseChangeGen(AbstractNoiseGen):
         pass
 
     def int_udf(self, distribution):
-        return F.udf(lambda elem: \
-                         BaseChangeGen.base_change_generation(elem,
-                                                              distribution),
+        return F.udf(lambda elem:
+                     BaseChangeGen.base_change_generation(elem,
+                                                          distribution),
                      StringType())
 
     def double_udf(self, distribution):
-        return F.udf(lambda elem: \
-                         BaseChangeGen.base_change_generation(elem,
-                                                              distribution),
+        return F.udf(lambda elem:
+                     BaseChangeGen.base_change_generation(elem,
+                                                          distribution),
                      StringType())
 
     def bigint_udf(self, distribution):
-        return F.udf(lambda elem: \
-                         BaseChangeGen.base_change_generation(elem,
-                                                              distribution),
+        return F.udf(lambda elem:
+                     BaseChangeGen.base_change_generation(elem,
+                                                          distribution),
                      StringType())
 
     def tinyint_udf(self, distribution):
-        return F.udf(lambda elem: \
-                         BaseChangeGen.base_change_generation(elem,
-                                                              distribution),
+        return F.udf(lambda elem:
+                     BaseChangeGen.base_change_generation(elem,
+                                                          distribution),
                      StringType())
 
     def decimal_udf(self, distribution):
-        return F.udf(lambda elem: \
-                         BaseChangeGen.base_change_generation(elem,
-                                                              distribution),
+        return F.udf(lambda elem:
+                     BaseChangeGen.base_change_generation(elem,
+                                                          distribution),
                      StringType())
 
     def smallint_udf(self, distribution):
-        return F.udf(lambda elem: \
-                         BaseChangeGen.base_change_generation(elem,
-                                                              distribution),
+        return F.udf(lambda elem:
+                     BaseChangeGen.base_change_generation(elem,
+                                                          distribution),
                      StringType())
 
     def date_udf(self, distribution):

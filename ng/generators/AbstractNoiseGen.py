@@ -25,10 +25,8 @@ class AbstractNoiseGen(ABC):
 
     def generate(self):
         df = reduce(
-            lambda data, col:
-            data.transform(
-                lambda ds: self.generate_noise(ds, col)
-            ),
+            lambda data, col: data.transform(
+                lambda ds: self.generate_noise(ds, col)),
             self.columns,
             self.df)
         return df
@@ -57,8 +55,8 @@ class AbstractNoiseGen(ABC):
         if col_type == 'timestamp':
             return self.timestamp_udf(self.distribution)
         raise IndexError(
-            'The given value {} is not a column type supported'.format(
-                col_type))
+            'The given value {} is not a column type supported'
+                .format(col_type))
 
     @abstractmethod
     def string_udf(self, distribution):

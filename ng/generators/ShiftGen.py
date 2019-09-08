@@ -26,8 +26,8 @@ class ShiftGen(AbstractNoiseGen):
 
     @staticmethod
     def description(**kwargs):
-        return f'{ShiftGen.name()} sums/subtracts to the input element ' \
-               f'by a factor of {factor}'
+        return '{} sums/subtracts to the input element by a factor of {}' \
+            .format(ShiftGen.name(), factor)
 
     @staticmethod
     def name(**kwargs):

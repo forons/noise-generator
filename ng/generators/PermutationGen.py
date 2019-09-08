@@ -24,8 +24,8 @@ class PermutationGen(AbstractNoiseGen):
 
     @staticmethod
     def description(**kwargs):
-        return f'{PermutationGen.name()} creates a permutation of ' \
-               f'two elements of the same word or number or shuffles the input'
+        return '{} creates a permutation of two elements of the same word or ' \
+               'number or shuffles the input'.format(PermutationGen.name())
 
     @staticmethod
     def name(**kwargs):

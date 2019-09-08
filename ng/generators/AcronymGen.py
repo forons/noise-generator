@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-import logging
 import random
 import re
 from .AbstractNoiseGen import AbstractNoiseGen
@@ -26,8 +25,8 @@ class AcronymGen(AbstractNoiseGen):
 
     @staticmethod
     def description(**kwargs):
-        return f'{AcronymGen.name()} creates an acronym ' \
-               f'of maximum {max_acronyms} words'
+        return '{} creates an acronym of maximum {} words' \
+            .format(AcronymGen.name(), max_acronyms)
 
     @staticmethod
     def name(**kwargs):

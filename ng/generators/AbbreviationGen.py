@@ -16,8 +16,8 @@ class AbbreviationGen(AbstractNoiseGen):
 
     @staticmethod
     def description(**kwargs):
-        return f'{AbbreviationGen.name()} keeps only the first char or digit ' \
-               f'of the input value'
+        return '{} keeps only the first char or digit of the input value' \
+            .format(AbbreviationGen.name())
 
     @staticmethod
     def name(**kwargs):

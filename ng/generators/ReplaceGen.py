@@ -27,8 +27,8 @@ class ReplaceGen(AbstractNoiseGen):
 
     @staticmethod
     def description(**kwargs):
-        return f'{ReplaceGen.name()} replaces the input with a value ' \
-               f'in the list {replacements}'
+        return '{} replaces the input with a value in the list {}' \
+            .format(ReplaceGen.name(), replacements)
 
     @staticmethod
     def name(**kwargs):

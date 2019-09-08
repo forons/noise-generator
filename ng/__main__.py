@@ -65,8 +65,7 @@ def read_dataset(spark_session, input_path, input_format, infer_schema, header,
         return reader.parquet(input_path, inferSchema=infer_schema,
                               header=header, nullValue=null, quote=quote)
     else:
-        logging.WARN(
-            f'The input_path format {input_format} is currently not tested.')
+        logging.WARN('The input format {} is currently not tested.'.format(input_format))
         return spark_session.read.load(input, inferSchema=infer_schema,
                                        header=header, nullValue=null,
                                        quote=quote)
@@ -83,8 +82,7 @@ def write_dataset(data, output_path, output_format, header, null, quote):
         data.write.mode('overwrite').parquet(output_path, header=header,
                                              nullValue=null, quote=quote)
     else:
-        logging.WARN(
-            f'The input format {output_format} is currently not tested.')
+        logging.WARN('The output format {} is currently not tested.'.format(output_format))
 
 
 def get_columns(data, given_columns, id_columns):
