@@ -105,9 +105,9 @@ def split_columns(cols, default_arg=None):
     if ',' in cols:
         return [int(col) for col in cols.split(',')]
     elif ' ' in cols:
-        return [int(col) for col in cols.split(',')]
+        return [int(col) for col in cols.split(' ')]
     else:
-        raise ValueError('Unknown column separator: it should be`,` or ` `')
+        raise ValueError('Unknown column separator: it should be `,` or ` `')
 
 
 def quiet_logs(sc):
