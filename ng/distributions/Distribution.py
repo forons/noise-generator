@@ -12,22 +12,21 @@ class Distribution(Enum):
     POISSON = 2
 
     @staticmethod
-    def determine_distribution(given_distribution, distribution_params):
-        try:
-            distribution = given_distribution.upper()
-            if Distribution[distribution] is Distribution.UNIFORM:
-                if not distribution_params:
-                    distribution_params = 0.5
-                return UniformDist(given_rate=float(distribution_params))
-            if Distribution[distribution] is Distribution.GAUSSIAN:
-                if not distribution_params:
-                    distribution_params = [0., 1.]
-                return NormalDist(given_loc=distribution_params[0],
-                                  given_scale=distribution_params[1])
-            if Distribution[distribution] is Distribution.POISSON:
-                pass
-        except Exception:
-            msg = 'The given value {} is not a distribution supported'.format(
-                given_distribution)
-            logging.info(msg)
-            raise IndexError(msg)
+    def determine_distribution(distribution, distribution_params):
+        distribution_upper = distribution.upper()
+        if not Distribution[distribution_upper] or Distribution[distribution_upper] is None:
+            raise IndexError('Distribution not supported `{}`. Try one of: {}'.format(
+                distribution, [(elem.value, elem.name) for elem in Distribution]))
+        if Distribution[distribution_upper] == Distribution.UNIFORM:
+            if not distribution_params:
+                distribution_params = 0.5
+            return UniformDist(rate=float(distribution_params))
+        if Distribution[distribution_upper] == Distribution.GAUSSIAN:
+            if not distribution_params:
+                distribution_params = [0., 1.]
+            return NormalDist(loc=float(distribution_params[0]),
+                              scale=float(distribution_params[1]))
+        if Distribution[distribution_upper] is Distribution.POISSON:
+            pass
+        raise IndexError('Distribution not supported `{}`. Try one of: {}'.format(
+                distribution, [(elem.value, elem.name) for elem in Distribution]))

@@ -10,8 +10,8 @@ class MissingInfoGen(AbstractNoiseGen):
     This class is introduces missing tuples into the data.
     """
 
-    def __init__(self, df, distribution):
-        super().__init__(df, [], distribution)
+    def __init__(self, df):
+        super().__init__(df, [])
 
     @staticmethod
     def description(**kwargs):
@@ -31,8 +31,8 @@ class MissingInfoGen(AbstractNoiseGen):
             lambda elem: MissingInfoGen.filter_func(elem, distribution),
             BooleanType())
 
-    def generate(self):
-        udf = self.filter_udf(self.distribution)
+    def generate(self, distribution):
+        udf = self.filter_udf(distribution)
         if callable(udf):
             return self.df.filter(udf(self.df[self.df.columns[0]]))
         raise IndexError('The udf is not callable!')
@@ -63,3 +63,6 @@ class MissingInfoGen(AbstractNoiseGen):
 
     def timestamp_udf(self, distribution):
         pass
+    
+    def __str__(self):
+        return '{} - {}'.format(MissingInfoGen.name(), self.columns)

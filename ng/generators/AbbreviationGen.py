@@ -11,8 +11,8 @@ class AbbreviationGen(AbstractNoiseGen):
     This class is introduces abbreviations into the data.
     """
 
-    def __init__(self, df, columns, distribution):
-        super().__init__(df, columns, distribution)
+    def __init__(self, df, columns):
+        super().__init__(df, columns)
 
     @staticmethod
     def description(**kwargs):
@@ -39,7 +39,7 @@ class AbbreviationGen(AbstractNoiseGen):
     def abbreviation_num_generation(elem, distribution):
         if not distribution.generate(elem):
             return elem
-        if elem is None:
+        if elem is None or elem == 0:
             return elem
         if elem < 0:
             return -(-elem // 10 ** int(math.log(-elem, 10)))
@@ -98,3 +98,6 @@ class AbbreviationGen(AbstractNoiseGen):
             lambda elem:
             AbbreviationGen.abbreviation_str_generation(elem, distribution),
             StringType())
+
+    def __str__(self):
+        return '{} - {}'.format(AbbreviationGen.name(), self.columns)

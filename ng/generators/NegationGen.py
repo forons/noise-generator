@@ -10,8 +10,8 @@ class NegationGen(AbstractNoiseGen):
     This class is introduces a change of the sign of the data.
     """
 
-    def __init__(self, df, columns, distribution):
-        super().__init__(df, columns, distribution)
+    def __init__(self, df, columns):
+        super().__init__(df, columns)
 
     @staticmethod
     def description(**kwargs):
@@ -68,3 +68,6 @@ class NegationGen(AbstractNoiseGen):
 
     def timestamp_udf(self, distribution):
         pass
+
+    def __str__(self):
+        return '{} - {}'.format(NegationGen.name(), self.columns)

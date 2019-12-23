@@ -5,27 +5,20 @@ from .AbstractNoiseGen import AbstractNoiseGen
 from pyspark.sql.types import *
 from pyspark.sql import functions as F
 
-shuffle = False
-
 
 class PermutationGen(AbstractNoiseGen):
     """
     This class introduces a permutation in a number or word.
     """
 
-    def __init__(self, df, columns, distribution, given_shuffle=shuffle):
-        super().__init__(df, columns, distribution)
-        global shuffle
-        if not given_shuffle:
-            given_shuffle = shuffle
-        else:
-            given_shuffle = bool(given_shuffle)
-        shuffle = given_shuffle
+    def __init__(self, df, columns, shuffle=False):
+        super().__init__(df, columns)
+        self.shuffle = shuffle
 
     @staticmethod
     def description(**kwargs):
         return '{} creates a permutation of two elements of the same word or ' \
-               'number or shuffles the input'.format(PermutationGen.name())
+               'number or shuffles the input - shuffle'.format(PermutationGen.name())
 
     @staticmethod
     def name(**kwargs):
@@ -85,36 +78,43 @@ class PermutationGen(AbstractNoiseGen):
         raise IndexError('The type {} is not supported'.format(type(elem)))
 
     def string_udf(self, distribution):
+        shuffle = self.shuffle
         return F.udf(lambda elem: PermutationGen.permute(elem, distribution,
                                                          is_shuffle=shuffle),
                      StringType())
 
     def int_udf(self, distribution):
+        shuffle = self.shuffle
         return F.udf(lambda elem: PermutationGen.permute(elem, distribution,
                                                          is_shuffle=shuffle),
                      LongType())
 
     def double_udf(self, distribution):
+        shuffle = self.shuffle
         return F.udf(lambda elem: PermutationGen.permute(elem, distribution,
                                                          is_shuffle=shuffle),
                      DoubleType())
 
     def bigint_udf(self, distribution):
+        shuffle = self.shuffle
         return F.udf(lambda elem: PermutationGen.permute(elem, distribution,
                                                          is_shuffle=shuffle),
                      LongType())
 
     def tinyint_udf(self, distribution):
+        shuffle = self.shuffle
         return F.udf(lambda elem: PermutationGen.permute(elem, distribution,
                                                          is_shuffle=shuffle),
                      IntegerType())
 
     def decimal_udf(self, distribution):
+        shuffle = self.shuffle
         return F.udf(lambda elem: PermutationGen.permute(elem, distribution,
                                                          is_shuffle=shuffle),
                      IntegerType())
 
     def smallint_udf(self, distribution):
+        shuffle = self.shuffle
         return F.udf(lambda elem: PermutationGen.permute(elem, distribution,
                                                          is_shuffle=shuffle),
                      IntegerType())
@@ -124,3 +124,6 @@ class PermutationGen(AbstractNoiseGen):
 
     def timestamp_udf(self, distribution):
         pass
+    
+    def __str__(self):
+        return '{} - {}'.format(PermutationGen.name(), self.columns)

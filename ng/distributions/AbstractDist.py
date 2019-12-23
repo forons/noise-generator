@@ -13,8 +13,7 @@ class AbstractDist(ABC):
         if seed:
             self.seed = seed
 
-    @staticmethod
-    def description(**kwargs):
+    def description(self, **kwargs):
         pass
 
     @staticmethod
@@ -24,3 +23,6 @@ class AbstractDist(ABC):
     @abstractmethod
     def generate(self, elem):
         pass
+
+    def __str__(self):
+        return self.description()

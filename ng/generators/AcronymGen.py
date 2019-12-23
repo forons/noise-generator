@@ -6,27 +6,20 @@ from .AbstractNoiseGen import AbstractNoiseGen
 from pyspark.sql.types import *
 from pyspark.sql import functions as F
 
-max_acronyms = 4
-
 
 class AcronymGen(AbstractNoiseGen):
     """
     This class introduces acronyms into the data.
     """
 
-    def __init__(self, df, columns, distribution, given_max_acronyms=None):
-        super().__init__(df, columns, distribution)
-        global max_acronyms
-        if not given_max_acronyms:
-            given_max_acronyms = max_acronyms
-        else:
-            given_max_acronyms = int(given_max_acronyms)
-        max_acronyms = given_max_acronyms
+    def __init__(self, df, columns, max_acronyms=4):
+        super().__init__(df, columns)
+        self.max_acronyms = max_acronyms
 
     @staticmethod
     def description(**kwargs):
         return '{} creates an acronym of maximum {} words' \
-            .format(AcronymGen.name(), max_acronyms)
+            .format(AcronymGen.name(), self.max_acronyms)
 
     @staticmethod
     def name(**kwargs):
@@ -89,7 +82,7 @@ class AcronymGen(AbstractNoiseGen):
         return start
 
     @staticmethod
-    def acronym_generation(elem, distribution):
+    def acronym_generation(elem, distribution, max_acronyms):
         if not distribution.generate(elem):
             return elem
         if elem is None or not elem:
@@ -97,8 +90,9 @@ class AcronymGen(AbstractNoiseGen):
         return AcronymGen.create_acronym(elem, max_acronyms)
 
     def string_udf(self, distribution):
+        max_acronyms = self.max_acronyms
         return F.udf(
-            lambda elem: AcronymGen.acronym_generation(elem, distribution),
+            lambda elem: AcronymGen.acronym_generation(elem, distribution, max_acronyms),
             StringType())
 
     def int_udf(self, distribution):
@@ -124,3 +118,6 @@ class AcronymGen(AbstractNoiseGen):
 
     def timestamp_udf(self, distribution):
         pass
+
+    def __str__(self):
+        return '{} - {}'.format(AcronymGen.name(), self.columns)

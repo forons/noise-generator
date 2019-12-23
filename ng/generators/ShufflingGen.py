@@ -6,35 +6,27 @@ from .AbstractNoiseGen import AbstractNoiseGen
 from pyspark.sql.types import *
 from pyspark.sql import functions as F
 
-num_shuffles = 3
-
 
 class ShufflingGen(AbstractNoiseGen):
     """
     This class introduces word shuffling into the data.
     """
 
-    def __init__(self, df, columns, distribution,
-                 given_num_shuffles=num_shuffles):
-        super().__init__(df, columns, distribution)
-        global num_shuffles
-        if not given_num_shuffles:
-            given_num_shuffles = num_shuffles
-        else:
-            given_num_shuffles = int(given_num_shuffles)
-        num_shuffles = given_num_shuffles
+    def __init__(self, df, columns, num_shuffles=3):
+        super().__init__(df, columns)
+        self.num_shuffles = num_shuffles
 
     @staticmethod
     def description(**kwargs):
-        return '{} shuffles up to {} words in the input element' \
-            .format(ShufflingGen.name(), num_shuffles)
+        return '{} shuffles up to a given number of words in the input element' \
+            .format(ShufflingGen.name())
 
     @staticmethod
     def name(**kwargs):
         return 'SHUFFLING'
 
     @staticmethod
-    def shuffling_generation(elem, distribution):
+    def shuffling_generation(elem, distribution, num_shuffles):
         if not distribution.generate(elem):
             return elem
         if elem is None or not elem:
@@ -76,8 +68,9 @@ class ShufflingGen(AbstractNoiseGen):
         return start
 
     def string_udf(self, distribution):
-        return F.udf(
-            lambda elem: ShufflingGen.shuffling_generation(elem, distribution),
+        num_shuffles = self.num_shuffles
+        return F.udf(lambda elem: ShufflingGen.shuffling_generation(elem, distribution,
+                                                                    num_shuffles),
             StringType())
 
     def int_udf(self, distribution):
@@ -103,3 +96,6 @@ class ShufflingGen(AbstractNoiseGen):
 
     def timestamp_udf(self, distribution):
         pass
+
+    def __str__(self):
+        return '{} - {} - {}'.format(ShufflingGen.name(), self.columns, self.num_shuffles)

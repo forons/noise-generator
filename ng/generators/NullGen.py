@@ -10,8 +10,8 @@ class NullGen(AbstractNoiseGen):
     This class is introduces nulls into the data.
     """
 
-    def __init__(self, df, columns, distribution):
-        super().__init__(df, columns, distribution)
+    def __init__(self, df, columns):
+        super().__init__(df, columns)
 
     @staticmethod
     def description(**kwargs):
@@ -62,3 +62,6 @@ class NullGen(AbstractNoiseGen):
     def timestamp_udf(self, distribution):
         return F.udf(lambda elem: NullGen.null_generation(elem, distribution),
                      TimestampType())
+
+    def __str__(self):
+        return '{} - {}'.format(NullGen.name(), self.columns)

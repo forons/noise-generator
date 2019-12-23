@@ -7,35 +7,28 @@ from .Edit import Edit
 from pyspark.sql.types import *
 from pyspark.sql import functions as F
 
-num_edits = 3
-
 
 class EditGen(AbstractNoiseGen):
     """
     This class introduces edits (according to the edit distance) into the data.
     """
 
-    def __init__(self, df, columns, distribution, given_num_edits=num_edits):
-        super().__init__(df, columns, distribution)
-        global num_edits
-        if not given_num_edits:
-            given_num_edits = num_edits
-        else:
-            given_num_edits = int(given_num_edits)
-        num_edits = given_num_edits
+    def __init__(self, df, columns, edits=3):
+        super().__init__(df, columns)
+        self.edits = edits
 
     @staticmethod
     def description(**kwargs):
-        return '{} edits the given value with {} changes' \
-            .format(EditGen.name(), num_edits)
+        return '{} edits the given value with some changes' \
+            .format(EditGen.name())
 
     @staticmethod
     def name(**kwargs):
         return 'EDIT'
 
     @staticmethod
-    def create_edit(elem, max_changes, only_numbers):
-        for n in range(0, max_changes):
+    def create_edit(elem, edits, only_numbers):
+        for n in range(edits):
             choice = random.choice(list(Edit))
             if choice is Edit.INSERTION:
                 elem = EditGen.create_insertion(elem, only_numbers)
@@ -81,53 +74,72 @@ class EditGen(AbstractNoiseGen):
         return elem[:position] + elem[position + 1:]
 
     @staticmethod
-    def acronym_generation(elem, distribution, only_numbers=False):
+    def edit_generation(elem, distribution, edits, only_numbers=False):
         if not distribution.generate(elem):
             return elem
         if elem is None or not elem:
             return elem
+        if isinstance(elem, int) or isinstance(elem, float) or isinstance(elem, str):
+            ret = EditGen.create_edit(str(elem), edits, only_numbers)
+        else:
+            raise IndexError('Type {} not supported'.format(type(elem)))
         if isinstance(elem, int):
-            return int(EditGen.create_edit(str(elem), num_edits, only_numbers))
+            if not ret:
+                ret = 0
+            return int(ret)
         elif isinstance(elem, float):
-            return float(
-                EditGen.create_edit(str(elem), num_edits, only_numbers))
-        elif isinstance(elem, str):
-            return EditGen.create_edit(str(elem), num_edits, only_numbers)
-        raise IndexError('Type {} not supported'.format(type(elem)))
+            if not ret:
+                ret = 0
+            return float(ret)
+        return ret
 
     def string_udf(self, distribution):
-        return F.udf(
-            lambda elem: EditGen.acronym_generation(elem, distribution),
-            StringType())
+        edits = self.edits
+        return F.udf(lambda elem: EditGen.edit_generation(elem, distribution,
+                                                          edits,
+                                                          only_numbers=False),
+                     StringType())
 
     def int_udf(self, distribution):
-        return F.udf(lambda elem: EditGen.acronym_generation(elem, distribution,
-                                                             only_numbers=True),
+        edits = self.edits
+        return F.udf(lambda elem: EditGen.edit_generation(elem, distribution,
+                                                          edits,
+                                                          only_numbers=True),
                      IntegerType())
 
     def double_udf(self, distribution):
-        return F.udf(lambda elem: EditGen.acronym_generation(elem, distribution,
-                                                             only_numbers=True),
+        edits = self.edits
+        return F.udf(lambda elem: EditGen.edit_generation(elem, distribution,
+                                                          edits,
+                                                          only_numbers=True),
                      DoubleType())
 
     def bigint_udf(self, distribution):
-        return F.udf(lambda elem: EditGen.acronym_generation(elem, distribution,
-                                                             only_numbers=True),
+        edits = self.edits
+        return F.udf(lambda elem: EditGen.edit_generation(elem, distribution,
+                                                          edits,
+                                                          only_numbers=True),
                      LongType())
 
     def tinyint_udf(self, distribution):
-        return F.udf(lambda elem: EditGen.acronym_generation(elem, distribution,
-                                                             only_numbers=True),
+        edits = self.edits
+        return F.udf(lambda elem: EditGen.edit_generation(elem, distribution,
+                                                          edits,
+                                                          only_numbers=True),
                      IntegerType())
 
     def decimal_udf(self, distribution):
-        return F.udf(lambda elem: EditGen.acronym_generation(elem, distribution,
-                                                             only_numbers=True),
+        edits = self.edits
+        return F.udf(lambda elem: EditGen.edit_generation(elem, distribution,
+                                                          edits,
+                                                          only_numbers=True),
                      IntegerType())
 
     def smallint_udf(self, distribution):
-        return F.udf(lambda elem: EditGen.acronym_generation(elem, distribution,
-                                                             only_numbers=True),
+        edits = self.edits
+        return F.udf(lambda elem: EditGen.edit_generation(elem, distribution,
+                                                          edits,
+                                                          only_numbers=True),
                      IntegerType())
 
     def date_udf(self, distribution):
@@ -135,3 +147,6 @@ class EditGen(AbstractNoiseGen):
 
     def timestamp_udf(self, distribution):
         pass
+
+    def __str__(self):
+        return '{} - {}'.format(EditGen.name(), self.columns)

@@ -6,6 +6,7 @@ from .AcronymGen import AcronymGen
 from .BaseChangeGen import BaseChangeGen
 from .EditGen import EditGen
 from .MissingInfoGen import MissingInfoGen
+from .MultilingualGen import MultilingualGen
 from .NegationGen import NegationGen
 from .NullGen import NullGen
 from .PermutationGen import PermutationGen
@@ -13,6 +14,7 @@ from .ReplaceGen import ReplaceGen
 from .ScaleGen import ScaleGen
 from .ShiftGen import ShiftGen
 from .ShufflingGen import ShufflingGen
+from .SynonymGen import SynonymGen
 
 
 class Noise(Enum):
@@ -32,55 +34,56 @@ class Noise(Enum):
     SYNONYM = 13
 
     @staticmethod
-    def determine_generator(given_noise, df, columns, distribution,
-                            noise_params):
-        try:
-            noise = given_noise.upper()
-            if Noise[noise] is Noise.ABBREVIATION:
-                return AbbreviationGen(df, columns, distribution)
-            if Noise[noise] is Noise.ACRONYM:
-                if not noise_params:
-                    return AcronymGen(df, columns, distribution)
-                return AcronymGen(df, columns, distribution, noise_params)
-            if Noise[noise] is Noise.BASE_CHANGE:
-                if not noise_params:
-                    return BaseChangeGen(df, columns, distribution)
-                return BaseChangeGen(df, columns, distribution, noise_params)
-            if Noise[noise] is Noise.EDIT:
-                if not noise_params:
-                    return EditGen(df, columns, distribution)
-                return EditGen(df, columns, distribution, noise_params)
-            if Noise[noise] is Noise.MISSING_INFO:
-                return MissingInfoGen(df, distribution)
-            if Noise[noise] is Noise.MULTILINGUAL:
-                pass
-            if Noise[noise] is Noise.NEGATION:
-                return NegationGen(df, columns, distribution)
-            if Noise[noise] is Noise.NULL:
-                return NullGen(df, columns, distribution)
-            if Noise[noise] is Noise.PERMUTATION:
-                if not noise_params:
-                    return PermutationGen(df, columns, distribution)
-                return PermutationGen(df, columns, distribution, noise_params)
-            if Noise[noise] is Noise.REPLACE:
-                if not noise_params:
-                    return ReplaceGen(df, columns, distribution)
-                return ReplaceGen(df, columns, distribution, noise_params)
-            if Noise[noise] is Noise.SCALE:
-                if not noise_params:
-                    return ScaleGen(df, columns, distribution)
-                return ScaleGen(df, columns, distribution, noise_params)
-            if Noise[noise] is Noise.SHIFT:
-                if not noise_params:
-                    return ShiftGen(df, columns, distribution)
-                return ShiftGen(df, columns, distribution, noise_params)
-            if Noise[noise] is Noise.SHUFFLING:
-                if not noise_params:
-                    return ShufflingGen(df, columns, distribution)
-                return ShufflingGen(df, columns, distribution, noise_params)
-            if Noise[noise] is Noise.SYNONYM:
-                pass
-        except Exception:
-            raise IndexError(
-                'The given value {} is not a noise supported'.format(
-                    given_noise))
+    def determine_generator(noise, df, columns, noise_params):
+        noise_value = noise.upper()
+        if not Noise[noise_value] or Noise[noise_value] is None:
+            raise IndexError('The given value {} is not supported.Try one of: {}'.format(
+                noise, [(elem.value, elem.name) for elem in Noise]))
+                
+        if Noise[noise_value] is Noise.ABBREVIATION:
+            return AbbreviationGen(df, columns)
+        if Noise[noise_value] is Noise.ACRONYM:
+            if noise_params is None:
+                return AcronymGen(df, columns)
+            return AcronymGen(df, columns, noise_params)
+        if Noise[noise_value] is Noise.BASE_CHANGE:
+            if noise_params is None:
+                return BaseChangeGen(df, columns)
+            return BaseChangeGen(df, columns, noise_params)
+        if Noise[noise_value] is Noise.EDIT:
+            if noise_params is None:
+                return EditGen(df, columns)
+            return EditGen(df, columns, noise_params)
+        if Noise[noise_value] is Noise.MISSING_INFO:
+            return MissingInfoGen(df)
+        if Noise[noise_value] is Noise.MULTILINGUAL:
+            return MultilingualGen(df, columns)
+        if Noise[noise_value] is Noise.NEGATION:
+            return NegationGen(df, columns)
+        if Noise[noise_value] is Noise.NULL:
+            return NullGen(df, columns)
+        if Noise[noise_value] is Noise.PERMUTATION:
+            if noise_params is None:
+                return PermutationGen(df, columns)
+            return PermutationGen(df, columns, noise_params)
+        if Noise[noise_value] is Noise.REPLACE:
+            if noise_params is None:
+                return ReplaceGen(df, columns)
+            return ReplaceGen(df, columns, noise_params)
+        if Noise[noise_value] is Noise.SCALE:
+            if noise_params is None:
+                return ScaleGen(df, columns)
+            return ScaleGen(df, columns, noise_params)
+        if Noise[noise_value] is Noise.SHIFT:
+            if noise_params is None:
+                return ShiftGen(df, columns)
+            return ShiftGen(df, columns, noise_params)
+        if Noise[noise_value] is Noise.SHUFFLING:
+            if noise_params is None:
+                return ShufflingGen(df, columns)
+            return ShufflingGen(df, columns, noise_params)
+        if Noise[noise_value] is Noise.SYNONYM:
+            return SynonymGen(df, columns)
+        
+        raise IndexError('The given value {} is not supported. Try one of: {}'.format(
+                    noise, [(elem.value, elem.name) for elem in Noise]))

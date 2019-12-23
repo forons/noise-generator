@@ -88,7 +88,7 @@ class BasicTestSuite(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    findspark.init('/Users/forons/Downloads/spark-2.3.2-bin-hadoop2.7')
+    findspark.init('/Users/forons/Downloads/spark-2.2.1-bin-hadoop2.7')
     logging.basicConfig(format='%(asctime)s - %(name)s - %(message)s',
                         level=logging.INFO)
     unittest.main()

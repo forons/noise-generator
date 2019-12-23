@@ -10,53 +10,53 @@ class AbstractNoiseGen(ABC):
     generation of the noise into the data.
     """
 
-    def __init__(self, df, columns, distribution):
+    def __init__(self, df, columns):
         self.df = df
         self.columns = columns
-        self.distribution = distribution
 
     @staticmethod
-    def description(self):
+    def description():
         pass
 
     @staticmethod
-    def name(self):
+    def name():
         pass
 
-    def generate(self):
+    def generate(self, distribution):
         df = reduce(
             lambda data, col: data.transform(
-                lambda ds: self.generate_noise(ds, col)),
+                lambda ds: self.generate_noise(ds, col, distribution)),
             self.columns,
             self.df)
         return df
+#         df = self.df
+#         for col in self.columns:
+#             df = df.transform(lambda elem: self.generate_noise(elem, col, distribution))
+#         return df
 
-    def generate_noise(self, df, col):
+    def generate_noise(self, df, col, distribution):
         _, col_type = df.dtypes[col]
-        typed_udf = self.get_typed_udf(col_type)
+        typed_udf = self.get_typed_udf(col_type, distribution)
         if callable(typed_udf):
             return df.withColumn(df.columns[col], typed_udf(df.columns[col]))
         else:
-            IndexError(
-                'The given typed udf -{}-is not callable'.format(typed_udf))
+            # raise IndexError('Udf -{}-is not callable'.format(typed_udf))
             return df
 
-    def get_typed_udf(self, col_type):
+    def get_typed_udf(self, col_type, distribution):
         if col_type == 'string':
-            return self.string_udf(self.distribution)
+            return self.string_udf(distribution)
         if col_type == 'int':
-            return self.int_udf(self.distribution)
+            return self.int_udf(distribution)
         if col_type == 'double':
-            return self.double_udf(self.distribution)
+            return self.double_udf(distribution)
         if col_type == 'bigint':
-            return self.bigint_udf(self.distribution)
+            return self.bigint_udf(distribution)
         if col_type == 'date':
-            return self.date_udf(self.distribution)
+            return self.date_udf(distribution)
         if col_type == 'timestamp':
-            return self.timestamp_udf(self.distribution)
-        raise IndexError(
-            'The given value {} is not a column type supported'.format(
-                col_type))
+            return self.timestamp_udf(distribution)
+        raise ValueError('Value type `{}` not supported'.format(col_type))
 
     @abstractmethod
     def string_udf(self, distribution):
@@ -96,3 +96,6 @@ class AbstractNoiseGen(ABC):
     @abstractmethod
     def timestamp_udf(self, distribution):
         pass
+    
+    def __str__(self):
+        return self.description()
